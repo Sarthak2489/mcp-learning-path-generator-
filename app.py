@@ -2,6 +2,8 @@
 
 import streamlit as st
 from datetime import date
+import json
+from google import genai
 
 st.set_page_config(
     page_title="PathPilot",

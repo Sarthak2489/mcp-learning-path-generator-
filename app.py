@@ -1,4 +1,4 @@
-
+streamlit>=1.36,<2.0
 import streamlit as st
 
 st.set_page_config(

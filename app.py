@@ -53,4 +53,4 @@ if st.button("Generate My Learning Path"):
         st.write(f"**Week {week + 1}:** {topic}")
 
     st.info("Tip: Divide your weekly study time between learning, practice, and revision.")
-  streamlit>=1.36,<2.0
+  

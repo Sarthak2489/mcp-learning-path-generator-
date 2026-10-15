@@ -30,6 +30,52 @@ div[data-testid="stMetric"] {
 </style>
 """, unsafe_allow_html=True)
 
+def generate_ai_roadmap(plan):
+    """Generate a personalized learning roadmap with Gemini."""
+    api_key = st.secrets.get("GEMINI_API_KEY")
+
+    if not api_key:
+        return None
+
+    try:
+        client = genai.Client(api_key=api_key)
+
+        prompt = f"""
+        Create a practical learning roadmap for a student.
+
+        Learning goal: {plan["goal"]}
+        Current level: {plan["level"]}
+        Main goal: {plan["focus"]}
+        Duration: {plan["weeks"]} weeks
+        Study hours per week: {plan["hours"]}
+
+        Return ONLY valid JSON with this structure:
+        {{
+          "weeks": [
+            {{
+              "title": "Week topic",
+              "learn": "Topics to learn",
+              "build": "Practical task"
+            }}
+          ]
+        }}
+
+        Include exactly {plan["weeks"]} weekly entries.
+        Keep the plan beginner-friendly and practical.
+        Do not include markdown fences.
+        """
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
+
+        result = json.loads(response.text)
+        return result["weeks"]
+
+    except Exception:
+        return None
+        
 TRACKS = {
     "Python": [
         ("Python basics", "Variables, data types and input/output",
